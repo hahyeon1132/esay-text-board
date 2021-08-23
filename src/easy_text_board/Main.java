@@ -5,14 +5,11 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) {
 
+		Article article1 = new Article();
+		Article article2 = new Article();
+
 		Scanner sc = new Scanner(System.in);
 		int lastArticleId = 0;
-		int id1 = 0;
-		int id2 = 0;
-		String title1 = "";
-		String body1 = "";
-		String title2 = "";
-		String body2 = "";
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -27,13 +24,13 @@ public class Main {
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 				if (id == 1) {
-					title1 = title;
-					body1 = body;
-					id1 = id;
+					article1.title = title;
+					article1.body = body;
+					article1.id = id;
 				} else if (id == 2) {
-					title2 = title;
-					body2 = body;
-					id2 = id;
+					article2.title = title;
+					article2.body = body;
+					article2.id = id;
 				} else {
 					System.out.println("더 이상 게시글을 생성할 수 없습니다.");
 					continue;
@@ -52,10 +49,10 @@ public class Main {
 				} else {
 					System.out.println("번호 / 제목 / 내용");
 					if (lastArticleId == 1) {
-						System.out.printf("%d / %s / %s\n", id1, title1, body1);
+						System.out.printf("%d / %s / %s\n", article1.id, article1.title, article1.body);
 					} else if (lastArticleId == 2) {
-						System.out.printf("%d / %s / %s\n", id1, title1, body1);
-						System.out.printf("%d / %s / %s\n", id2, title2, body2);
+						System.out.printf("%d / %s / %s\n", article1.id, article1.title, article1.body);
+						System.out.printf("%d / %s / %s\n", article2.id, article2.title, article2.body);
 					}
 
 				}
@@ -64,16 +61,16 @@ public class Main {
 				break;
 			} else if (command.startsWith("article detail ")) {
 				int inputedId = Integer.parseInt(command.split(" ")[2]);
-				if (inputedId == 1) {
-					System.out.printf("번호 : %d\n", id1);
-					System.out.printf("제목 : %s\n", title1);
-					System.out.printf("내용 : %s\n", body1);
+				if (inputedId > lastArticleId || inputedId == 0) {
+					System.out.printf("%d번 개시글이 존재하지 않습니다.\n", inputedId);
+				} else if (inputedId == 1) {
+					System.out.printf("번호 : %d\n", article1.id);
+					System.out.printf("제목 : %s\n", article1.title);
+					System.out.printf("내용 : %s\n", article1.body);
 				} else if (inputedId == 2) {
-					System.out.printf("번호 : %d\n", id2);
-					System.out.printf("제목 : %s\n", title2);
-					System.out.printf("내용 : %s\n", body2);
-				} else {
-					System.out.printf("%d번 개시글이 존재하지 않습니다\n", inputedId);
+					System.out.printf("번호 : %d\n", article2.id);
+					System.out.printf("제목 : %s\n", article2.title);
+					System.out.printf("내용 : %s\n", article2.body);
 				}
 			}
 

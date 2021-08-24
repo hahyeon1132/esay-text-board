@@ -3,21 +3,21 @@ package easy_text_board;
 import java.util.Scanner;
 
 public class App {
-	
+
 	Article[] articles;
 	int lastArticleId;
 	int articlesSize;
 
-	public void init() {
+	public App() {
 		articles = new Article[32];
 		lastArticleId = 0;
 		articlesSize = 0;
-		
-		for (int i = 0; i < 32; i++) {
-			articleAdd("제목" + (i + 1),"내용" + (i + 1));
-		}
-	}
 
+		for (int i = 0; i < 32; i++) {
+			articleAdd("제목" + (i + 1), "내용" + (i + 1));
+		}
+
+	}
 
 	private void articlesfull() {
 
@@ -52,7 +52,7 @@ public class App {
 	}
 
 	private void articleAdd(String title, String body) {
-		
+
 		articlesfull();
 		int id = lastArticleId + 1;
 		lastArticleId = id;
@@ -110,7 +110,6 @@ public class App {
 
 				articleAdd(title, body);
 				System.out.printf("%d번 개시글이 생성 되었습니다\n", lastArticleId);
-				
 
 			} else if (command.equals("article list")) {
 				System.out.println("== 게시글 리스트 ==");

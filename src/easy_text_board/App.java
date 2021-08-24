@@ -12,10 +12,13 @@ public class App {
 	}
 
 	public Article getArticle(int id) {
-		if (id < 1 || id > lastArticleId) {
+		
+		int index = getIndexById(id);
+		
+		if( index == -1 ) {
 			return null;
 		}
-		return articles[id - 1];
+		return articles[index];
 	}
 
 	public void run() {
@@ -50,7 +53,7 @@ public class App {
 				article.id = id;
 				article.title = title;
 				article.body = body;
-				
+
 				articles[articlesSize] = article;
 
 				System.out.println("== 입력된 내용 ==");
@@ -65,8 +68,8 @@ public class App {
 					System.out.println("게시글이 없습니다.");
 				} else {
 					System.out.println("번호 / 제목");
-					for (int i = 1; i <= lastArticleId; i++) {
-						Article article = getArticle(i);
+					for (int i = 0; i < articlesSize(); i++) {
+						Article article = articles[i];
 						System.out.printf("%s / %s\n", article.id, article.title);
 					}
 				}
@@ -75,6 +78,7 @@ public class App {
 				break;
 			} else if (command.startsWith("article detail ")) {
 				int inputedId = Integer.parseInt(command.split(" ")[2]);
+				System.out.println("== 게시물 상세 ==");
 				Article selectedArticle = getArticle(inputedId);
 				if (selectedArticle == null) {
 					System.out.printf("%d번 개시글이 존재하지 않습니다.\n", inputedId);
@@ -83,6 +87,16 @@ public class App {
 				System.out.printf("번호 : %d\n", selectedArticle.id);
 				System.out.printf("제목 : %s\n", selectedArticle.title);
 				System.out.printf("내용 : %s\n", selectedArticle.body);
+			} else if (command.startsWith("article delete ")) {
+				int inputedId = Integer.parseInt(command.split(" ")[2]);
+				System.out.println("== 게시물 삭제 ==");
+				Article selectedArticle = getArticle(inputedId);
+				if (selectedArticle == null) {
+					System.out.printf("%d번 개시글이 존재하지 않습니다.\n", inputedId);
+					continue;
+				}
+				removeArticle(inputedId);
+				System.out.printf("%d번 개시글이 삭제되었습니다.\n",inputedId);
 			}
 
 			else {
@@ -91,6 +105,29 @@ public class App {
 		}
 		sc.close();
 
+	}
+
+	private void removeArticle(int id) {
+		int index = getIndexById(id);
+		
+		if(index == -1) {
+			return;
+		}
+		for (int i = index; i < articlesSize ; i ++) {
+			articles[i] = articles[i+1];
+		}
+		
+		articlesSize--;
+		
+	}
+
+	private int getIndexById(int id) {
+		for (int i = 0 ; i < articlesSize(); i++) {
+			if(articles[i].id == id) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 }

@@ -99,7 +99,7 @@ public class App {
 					System.out.println("게시글이 없습니다.");
 				} else {
 					System.out.println("번호 / 제목");
-					for (int i = 0; i < articlesSize(); i++) {
+					for (int i = articlesSize()-1; i >= 0 ; i--) {
 						Article article = articles[i];
 						System.out.printf("%s / %s\n", article.id, article.title);
 					}
@@ -146,6 +146,7 @@ public class App {
 				String body = sc.nextLine();
 				
 				articleModify(inputedId ,title , body);
+				
 				System.out.printf("%d번 개시글이 수정되었습니다\n", inputedId);
 
 			}

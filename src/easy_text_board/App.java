@@ -3,6 +3,7 @@ package easy_text_board;
 import java.util.Scanner;
 
 public class App {
+	
 	Article[] articles = new Article[2];
 	int lastArticleId = 0;
 	int articlesSize = 0;
@@ -12,13 +13,54 @@ public class App {
 	}
 
 	public Article getArticle(int id) {
-		
+
 		int index = getIndexById(id);
-		
-		if( index == -1 ) {
+
+		if (index == -1) {
 			return null;
 		}
 		return articles[index];
+	}
+
+	private void articleAdd(String title, String body) {
+		System.out.println("== 게시글 작성 ==");
+
+		int id = lastArticleId + 1;
+		lastArticleId = id;
+
+		Article article = new Article();
+
+		article.id = id;
+		article.title = title;
+		article.body = body;
+
+		articles[articlesSize] = article;
+
+		System.out.printf("%d번 개시글이 생성 되었습니다\n", id);
+
+	}
+
+	private void removeArticle(int id) {
+		int index = getIndexById(id);
+
+		if (index == -1) {
+			return;
+		}
+		for (int i = index; i < articlesSize; i++) {
+			articles[i] = articles[i + 1];
+		}
+
+		articlesSize--;
+
+	}
+
+	private int getIndexById(int id) {
+		for (int i = 0; i < articlesSize(); i++) {
+			if (articles[i].id == id) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public void run() {
@@ -37,29 +79,12 @@ public class App {
 					System.out.println("더 이상 개시글을 생성할 수 없습니다.");
 					continue;
 				}
-
-				System.out.println("== 게시글 작성 ==");
-
-				int id = lastArticleId + 1;
-				lastArticleId = id;
-
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 
-				Article article = new Article();
-
-				article.id = id;
-				article.title = title;
-				article.body = body;
-
-				articles[articlesSize] = article;
-
-				System.out.println("== 입력된 내용 ==");
-				System.out.printf("번호 : %d\n", id);
-				System.out.printf("제목 : %s\n", title);
-				System.out.printf("내용 : %s\n", body);
+				articleAdd(title, body);
 				articlesSize++;
 
 			} else if (command.equals("article list")) {
@@ -96,7 +121,7 @@ public class App {
 					continue;
 				}
 				removeArticle(inputedId);
-				System.out.printf("%d번 개시글이 삭제되었습니다.\n",inputedId);
+				System.out.printf("%d번 개시글이 삭제되었습니다.\n", inputedId);
 			}
 
 			else {
@@ -105,29 +130,6 @@ public class App {
 		}
 		sc.close();
 
-	}
-
-	private void removeArticle(int id) {
-		int index = getIndexById(id);
-		
-		if(index == -1) {
-			return;
-		}
-		for (int i = index; i < articlesSize ; i ++) {
-			articles[i] = articles[i+1];
-		}
-		
-		articlesSize--;
-		
-	}
-
-	private int getIndexById(int id) {
-		for (int i = 0 ; i < articlesSize(); i++) {
-			if(articles[i].id == id) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 }

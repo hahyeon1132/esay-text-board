@@ -7,6 +7,18 @@ public class App {
 	Article[] articles = new Article[2];
 	int lastArticleId = 0;
 	int articlesSize = 0;
+	
+	private void articlesfull() {
+		
+		if (articlesSize() == articles.length) {
+			Article[] newArticles = new Article[articles.length *2];
+			for (int i = 0 ; i < articles.length;  i++) {
+				newArticles[i] = articles[i];
+			}
+			articles = newArticles;
+		}
+		
+	}
 
 	private int articlesSize() {
 		return articlesSize;
@@ -22,7 +34,7 @@ public class App {
 		return articles[index];
 	}
 
-	private void articleModify(int id , String title , String body) {
+	private void articleModify(int id, String title, String body) {
 		Article article = getArticle(id);
 		article.title = title;
 		article.body = body;
@@ -73,7 +85,7 @@ public class App {
 
 		Scanner sc = new Scanner(System.in);
 
-		int maxArticlesCount = articles.length;
+		
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -81,10 +93,8 @@ public class App {
 
 			if (command.equals("article add")) {
 
-				if (articlesSize() >= maxArticlesCount) {
-					System.out.println("더 이상 개시글을 생성할 수 없습니다.");
-					continue;
-				}
+				articlesfull();
+				
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
@@ -99,7 +109,7 @@ public class App {
 					System.out.println("게시글이 없습니다.");
 				} else {
 					System.out.println("번호 / 제목");
-					for (int i = articlesSize()-1; i >= 0 ; i--) {
+					for (int i = articlesSize() - 1; i >= 0; i--) {
 						Article article = articles[i];
 						System.out.printf("%s / %s\n", article.id, article.title);
 					}
@@ -133,20 +143,19 @@ public class App {
 				int inputedId = Integer.parseInt(command.split(" ")[2]);
 
 				Article article = getArticle(inputedId);
-				
 
 				if (article == null) {
 					System.out.printf("%d번 개시글이 존재하지 않습니다\n", inputedId);
 					return;
 				}
-				
+
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
-				
-				articleModify(inputedId ,title , body);
-				
+
+				articleModify(inputedId, title, body);
+
 				System.out.printf("%d번 개시글이 수정되었습니다\n", inputedId);
 
 			}
@@ -158,5 +167,7 @@ public class App {
 		sc.close();
 
 	}
+
+
 
 }

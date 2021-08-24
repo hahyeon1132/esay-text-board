@@ -4,9 +4,19 @@ import java.util.Scanner;
 
 public class App {
 
+	Article article1 = new Article();
+	Article article2 = new Article();
+
+	public Article getArticle(int id) {
+		if (id == 1) {
+			return article1;
+		} else if (id == 2) {
+			return article2;
+		}
+		return null;
+	}
+
 	public void run() {
-		Article article1 = new Article();
-		Article article2 = new Article();
 
 		Scanner sc = new Scanner(System.in);
 		int lastArticleId = 0;
@@ -61,17 +71,15 @@ public class App {
 				break;
 			} else if (command.startsWith("article detail ")) {
 				int inputedId = Integer.parseInt(command.split(" ")[2]);
+				Article selectedArticle = getArticle(inputedId);
+				
 				if (inputedId > lastArticleId || inputedId == 0) {
 					System.out.printf("%d번 개시글이 존재하지 않습니다.\n", inputedId);
-				} else if (inputedId == 1) {
-					System.out.printf("번호 : %d\n", article1.id);
-					System.out.printf("제목 : %s\n", article1.title);
-					System.out.printf("내용 : %s\n", article1.body);
-				} else if (inputedId == 2) {
-					System.out.printf("번호 : %d\n", article2.id);
-					System.out.printf("제목 : %s\n", article2.title);
-					System.out.printf("내용 : %s\n", article2.body);
-				}
+					continue;
+				} 
+				System.out.printf("번호 : %d\n", selectedArticle.id);
+				System.out.printf("제목 : %s\n", selectedArticle.title);
+				System.out.printf("내용 : %s\n", selectedArticle.body);
 			}
 
 			else {

@@ -3,16 +3,16 @@ package easy_text_board;
 import java.util.Scanner;
 
 public class App {
-	
+
 	Article[] articles = new Article[2];
 	int lastArticleId = 0;
 	int articlesSize = 0;
 
-	public int articlesSize() {
+	private int articlesSize() {
 		return articlesSize;
 	}
 
-	public Article getArticle(int id) {
+	private Article getArticle(int id) {
 
 		int index = getIndexById(id);
 
@@ -20,6 +20,12 @@ public class App {
 			return null;
 		}
 		return articles[index];
+	}
+
+	private void articleModify(int id , String title , String body) {
+		Article article = getArticle(id);
+		article.title = title;
+		article.body = body;
 	}
 
 	private void articleAdd(String title, String body) {
@@ -122,6 +128,26 @@ public class App {
 				}
 				removeArticle(inputedId);
 				System.out.printf("%d번 개시글이 삭제되었습니다.\n", inputedId);
+			} else if (command.startsWith("article modify ")) {
+				System.out.println("== 개시물 수정 ==");
+				int inputedId = Integer.parseInt(command.split(" ")[2]);
+
+				Article article = getArticle(inputedId);
+				
+
+				if (article == null) {
+					System.out.printf("%d번 개시글이 존재하지 않습니다\n", inputedId);
+					return;
+				}
+				
+				System.out.printf("제목 : ");
+				String title = sc.nextLine();
+				System.out.printf("내용 : ");
+				String body = sc.nextLine();
+				
+				articleModify(inputedId ,title , body);
+				System.out.printf("%d번 개시글이 수정되었습니다\n", inputedId);
+
 			}
 
 			else {

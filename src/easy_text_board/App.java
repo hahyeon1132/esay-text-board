@@ -3,37 +3,40 @@ package easy_text_board;
 import java.util.Scanner;
 
 public class App {
-
-	Article article1 = new Article();
-	Article article2 = new Article();
+	Article[] articles = new Article[2];
+	int lastArticleId = 0;
 
 	public Article getArticle(int id) {
-		if (id == 1) {
-			return article1;
-		} else if (id == 2) {
-			return article2;
+		if (id < 1 || id > lastArticleId) {
+			return null;
 		}
-		return null;
+		return articles[id - 1];
 	}
 
 	public void run() {
 
+		for (int i = 0; i < articles.length; i++) {
+			articles[i] = new Article();
+		}
+
 		Scanner sc = new Scanner(System.in);
-		int lastArticleId = 0;
 
 		while (true) {
 			System.out.printf("명령어 : ");
 			String command = sc.nextLine();
 
 			if (command.equals("article add")) {
-				System.out.println("== 게시글 작성 ==");
 
-				if (lastArticleId == 2) {
+				if (lastArticleId == articles.length) {
 					System.out.println("더 이상 개시글을 생성할 수 없습니다.");
 					continue;
 				}
-				
+
+				System.out.println("== 게시글 작성 ==");
+
 				int id = lastArticleId + 1;
+				lastArticleId = id;
+
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
@@ -49,8 +52,6 @@ public class App {
 				System.out.printf("번호 : %d\n", id);
 				System.out.printf("제목 : %s\n", title);
 				System.out.printf("내용 : %s\n", body);
-
-				lastArticleId = id;
 
 			} else if (command.equals("article list")) {
 				System.out.println("== 게시글 리스트 ==");

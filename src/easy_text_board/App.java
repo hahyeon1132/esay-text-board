@@ -5,6 +5,11 @@ import java.util.Scanner;
 public class App {
 	Article[] articles = new Article[2];
 	int lastArticleId = 0;
+	int articlesSize = 0;
+
+	public int articlesSize() {
+		return articlesSize;
+	}
 
 	public Article getArticle(int id) {
 		if (id < 1 || id > lastArticleId) {
@@ -15,11 +20,9 @@ public class App {
 
 	public void run() {
 
-		for (int i = 0; i < articles.length; i++) {
-			articles[i] = new Article();
-		}
-
 		Scanner sc = new Scanner(System.in);
+
+		int maxArticlesCount = articles.length;
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -27,7 +30,7 @@ public class App {
 
 			if (command.equals("article add")) {
 
-				if (lastArticleId == articles.length) {
+				if (articlesSize() >= maxArticlesCount) {
 					System.out.println("더 이상 개시글을 생성할 수 없습니다.");
 					continue;
 				}
@@ -42,20 +45,23 @@ public class App {
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 
-				Article article = getArticle(id);
+				Article article = new Article();
 
 				article.id = id;
 				article.title = title;
 				article.body = body;
+				
+				articles[articlesSize] = article;
 
 				System.out.println("== 입력된 내용 ==");
 				System.out.printf("번호 : %d\n", id);
 				System.out.printf("제목 : %s\n", title);
 				System.out.printf("내용 : %s\n", body);
+				articlesSize++;
 
 			} else if (command.equals("article list")) {
 				System.out.println("== 게시글 리스트 ==");
-				if (lastArticleId == 0) {
+				if (articlesSize() == 0) {
 					System.out.println("게시글이 없습니다.");
 				} else {
 					System.out.println("번호 / 제목");
@@ -70,7 +76,7 @@ public class App {
 			} else if (command.startsWith("article detail ")) {
 				int inputedId = Integer.parseInt(command.split(" ")[2]);
 				Article selectedArticle = getArticle(inputedId);
-				if (selectedArticle == null || selectedArticle.id == 0) {
+				if (selectedArticle == null) {
 					System.out.printf("%d번 개시글이 존재하지 않습니다.\n", inputedId);
 					continue;
 				}
